@@ -44,16 +44,18 @@ clearCanvas  = () => {
 //начальная позиция персонажей
 princessPosition = [10, 500]
 //рисование персонажей
-characterDraw = () =>{
+counter = 0;
+characterDraw = (ignor) =>{
     if (direction == 'stop') {
         ctx.fillStyle = "rgb(0,0,0)";
         ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
     }else if(direction == 'Right') {
-        princessPosition[0]+=10;
+        princessPosition[0]+= 4;
         ctx.fillStyle = "rgb(0,0,0)";
         ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
+        counter++;
     }else if(direction == 'Left') {
-        princessPosition[0]-=10;
+        princessPosition[0]-=4;
         ctx.fillStyle = "rgb(0,0,0)";
         ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
     }
@@ -62,21 +64,22 @@ characterDraw = () =>{
 draw = () =>{
     clearCanvas();
     console.log(direction);
-    drawArea.forEach((element, i) => {
-        element.forEach((subElement, subI) => {
-            if(subElement == '*'){
-                ctx.fillStyle = "gray";
-                ctx.fillRect(subI * 10, i*10, 9, 9);
-            }else if (subElement == 's'){
-                ctx.fillStyle = "rgb(0,0,0)";
-                ctx.fillRect(subI * 10, i*10, 30, 60);
-            }else if (subElement == 'a'){
-                ctx.fillStyle = "rgb(259,0,0)";
-                ctx.fillRect(subI * 10, i*10, 9, 9);
-            }
-        });
-    });
-    characterDraw();
+    //drawArea.forEach((element, i) => {
+    //    element.forEach((subElement, subI) => {
+    //        if(subElement == '*'){
+    //            ctx.fillStyle = "white";
+    //            ctx.fillRect(subI * 10, i*10, 9, 9);
+    //        }else if (subElement == 's'){
+    //            ctx.fillStyle = "rgb(0,0,0)";
+    //            ctx.fillRect(subI * 10, i*10, 30, 60);
+    //        }else if (subElement == 'a'){
+    //            ctx.fillStyle = "rgb(259,0,0)";
+    //            ctx.fillRect(subI * 10, i*10, 9, 9);
+    //        }
+    //    });
+    //});
+    characterDraw(true);
+    requestAnimationFrame(draw);
 }
-timer = setInterval(draw, 1)
+window.requestAnimationFrame(draw);
 
