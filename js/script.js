@@ -19,22 +19,23 @@ for (let i = 0; i < yPoint/10; i++) {
 }
 
 //отслеживание нажатий стрелок с сохранением направления в переменную direction
-direction = 'stop';
+direction = ['stop', 'stop'];
 document.addEventListener('keydown', (event) => {
-    if (event.code == 'ArrowDown' && direction != 'up'){
-        direction = 'stop'
-    }else if (event.code == 'ArrowUp' && direction != 'down'){
-        direction = 'Up'
-    }else if (event.code == 'ArrowLeft' && direction != 'right'){
-        direction = 'Left'
-    }else if (event.code == 'ArrowRight' && direction != 'left'){
-        direction = 'Right'
+    if (event.code == 'ArrowUp'){
+        direction[1] = 'Up'
+    }else if (event.code == 'ArrowLeft'){
+        direction[0] = 'Left'
+    }else if (event.code == 'ArrowRight'){
+        direction[0] = 'Right'
     }
 });
 //проверка: отпущена ли клавиша
 document.addEventListener('keyup', (event) => {
-    if (event.code == 'Arrow' + direction ){
-        direction = 'stop'
+    if (event.code == 'Arrow' + direction[0] ){
+        direction[0] = 'stop'
+    }
+    if (event.code == 'Arrow' + direction[1] ){
+        direction[1] = 'stop'
     }
 });
 //очистка холста
@@ -49,20 +50,20 @@ jumpStart = princessPosition[1];
 jumpUp = true;
 pseudoUp = false;
 characterDraw = (ignor) =>{
-    if (direction == 'stop') {
+    if (direction[0] == 'stop' && direction[1] == 'stop') {
         ctx.fillStyle = "rgb(0,0,0)";
         ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
-    }else if(direction == 'Right') {
+    }else if(direction[0] == 'Right') {
         princessPosition[0]+= 4;
         ctx.fillStyle = "rgb(0,0,0)";
         ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
-    }else if(direction == 'Left') {
+    }else if(direction[0] == 'Left') {
         princessPosition[0]-=4;
         ctx.fillStyle = "rgb(0,0,0)";
         ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
     }
-    if(direction == 'Up' || pseudoUp) {
-        if(direction == 'Up'){
+    if(direction[1] == 'Up' || pseudoUp) {
+        if(direction[1] == 'Up'){
             pseudoUp = true;
         }
         if (fly){
