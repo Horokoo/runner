@@ -22,7 +22,7 @@ for (let i = 0; i < yPoint/10; i++) {
 direction = 'stop';
 document.addEventListener('keydown', (event) => {
     if (event.code == 'ArrowDown' && direction != 'up'){
-        direction = 'Down'
+        direction = 'stop'
     }else if (event.code == 'ArrowUp' && direction != 'down'){
         direction = 'Up'
     }else if (event.code == 'ArrowLeft' && direction != 'right'){
@@ -44,7 +44,10 @@ clearCanvas  = () => {
 //начальная позиция персонажей
 princessPosition = [10, 500]
 //рисование персонажей
-counter = 0;
+fly = true;
+jumpStart = princessPosition[1];
+jumpUp = true;
+pseudoUp = false;
 characterDraw = (ignor) =>{
     if (direction == 'stop') {
         ctx.fillStyle = "rgb(0,0,0)";
@@ -53,9 +56,36 @@ characterDraw = (ignor) =>{
         princessPosition[0]+= 4;
         ctx.fillStyle = "rgb(0,0,0)";
         ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
-        counter++;
     }else if(direction == 'Left') {
         princessPosition[0]-=4;
+        ctx.fillStyle = "rgb(0,0,0)";
+        ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
+    }
+    if(direction == 'Up' || pseudoUp) {
+        if(direction == 'Up'){
+            pseudoUp = true;
+        }
+        if (fly){
+            fly = false;
+            jumpStart = princessPosition[1]
+            princessPosition[1]-=4;
+        }else{
+            if(jumpUp && (jumpStart - princessPosition[1]) < 80){
+                console.log(jumpStart - princessPosition[1])
+                princessPosition[1]-=4;
+            }else{
+                jumpUp = false;
+                if(jumpStart != princessPosition[1]){
+                    princessPosition[1]+=4;
+                }else{
+                    console.log('down');
+                    jumpUp = true;
+                    fly = true;
+                    jumpStart = princessPosition[1];
+                    pseudoUp = false;
+                }
+            }
+        }
         ctx.fillStyle = "rgb(0,0,0)";
         ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
     }
@@ -63,21 +93,6 @@ characterDraw = (ignor) =>{
 // рисование элементов на холсте
 draw = () =>{
     clearCanvas();
-    console.log(direction);
-    //drawArea.forEach((element, i) => {
-    //    element.forEach((subElement, subI) => {
-    //        if(subElement == '*'){
-    //            ctx.fillStyle = "white";
-    //            ctx.fillRect(subI * 10, i*10, 9, 9);
-    //        }else if (subElement == 's'){
-    //            ctx.fillStyle = "rgb(0,0,0)";
-    //            ctx.fillRect(subI * 10, i*10, 30, 60);
-    //        }else if (subElement == 'a'){
-    //            ctx.fillStyle = "rgb(259,0,0)";
-    //            ctx.fillRect(subI * 10, i*10, 9, 9);
-    //        }
-    //    });
-    //});
     characterDraw(true);
     requestAnimationFrame(draw);
 }
