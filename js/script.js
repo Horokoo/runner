@@ -49,46 +49,51 @@ fly = true;
 jumpStart = princessPosition[1];
 jumpUp = true;
 pseudoUp = false;
-characterDraw = (ignor) =>{
-    if (direction[0] == 'stop' && direction[1] == 'stop') {
-        ctx.fillStyle = "rgb(0,0,0)";
-        ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
-    }else if(direction[0] == 'Right') {
-        princessPosition[0]+= 4;
-        ctx.fillStyle = "rgb(0,0,0)";
-        ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
-    }else if(direction[0] == 'Left') {
-        princessPosition[0]-=4;
-        ctx.fillStyle = "rgb(0,0,0)";
-        ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
-    }
-    if(direction[1] == 'Up' || pseudoUp) {
-        if(direction[1] == 'Up'){
-            pseudoUp = true;
-        }
-        if (fly){
-            fly = false;
-            jumpStart = princessPosition[1]
-            princessPosition[1]-=4;
-        }else{
-            if(jumpUp && (jumpStart - princessPosition[1]) < 80){
-                console.log(jumpStart - princessPosition[1])
+princessImage = [new Image(), new Image()];
+princessImage[0].src = "./images/body1.png";
+princessImage[1].src = "./images/body1R.png"
+step = 0;
+princessMotion = (changesIndex, speed, polus, jump) =>{
+        if(jump){
+            if(direction[1] == 'Up'){
+                pseudoUp = true;
+            }
+            if (fly){
+                fly = false;
+                jumpStart = princessPosition[1]
                 princessPosition[1]-=4;
             }else{
-                jumpUp = false;
-                if(jumpStart != princessPosition[1]){
-                    princessPosition[1]+=4;
+                if(jumpUp && (jumpStart - princessPosition[1]) < 64){
+                    princessPosition[1]-= 4;
                 }else{
-                    console.log('down');
-                    jumpUp = true;
-                    fly = true;
-                    jumpStart = princessPosition[1];
-                    pseudoUp = false;
+                    jumpUp = false;
+                    if(jumpStart != princessPosition[1]){
+                        princessPosition[1]+=4;
+                    }else{
+                        jumpUp = true;
+                        fly = true;
+                        jumpStart = princessPosition[1];
+                        pseudoUp = false;
+                    }
                 }
             }
+            ctx.drawImage(princessImage[step], princessPosition[0], princessPosition[1]); 
+        }else{
+            step = (speed == 0) ? step: (polus == 1) ? 0 : 1;
+            princessPosition[changesIndex]+= polus * speed;
+            ctx.drawImage(princessImage[step], princessPosition[0], princessPosition[1]); 
         }
-        ctx.fillStyle = "rgb(0,0,0)";
-        ctx.fillRect(princessPosition[0], princessPosition[1], 30, 60);
+}
+characterDraw = (ignor) =>{
+    if (direction[0] == 'stop' && direction[1] == 'stop') {
+        princessMotion(0, 0, 1, false)
+    }else if(direction[0] == 'Right') {
+        princessMotion(0, 4, 1, false)
+    }else if(direction[0] == 'Left') {
+        princessMotion(0, 4, -1, false)
+    }
+    if(direction[1] == 'Up' || pseudoUp) {
+        princessMotion(1, 4, -1, true);   
     }
 }
 // рисование элементов на холсте
