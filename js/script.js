@@ -50,8 +50,8 @@ jumpStart = princessPosition[1];
 jumpUp = true;
 pseudoUp = false;
 princessImage = [new Image(), new Image()];
-princessImage[0].src = "./images/body1.png";
-princessImage[1].src = "./images/body1R.png"
+princessImage[0].src = "./images/bodymod.png";
+princessImage[1].src = "./images/bodymodR.png"
 step = 0;
 princessMotion = (changesIndex, speed, polus, jump) =>{
         if(jump){
@@ -77,11 +77,11 @@ princessMotion = (changesIndex, speed, polus, jump) =>{
                     }
                 }
             }
-            ctx.drawImage(princessImage[step], princessPosition[0], princessPosition[1]); 
+            ctx.drawImage(princessImage[step], princessPosition[0], princessPosition[1], 35/1.5, 90/1.5); 
         }else{
             step = (speed == 0) ? step: (polus == 1) ? 0 : 1;
             princessPosition[changesIndex]+= polus * speed;
-            ctx.drawImage(princessImage[step], princessPosition[0], princessPosition[1]); 
+            ctx.drawImage(princessImage[step], princessPosition[0], princessPosition[1], 35/1.5, 90/1.5); 
         }
 }
 characterDraw = (ignor) =>{
