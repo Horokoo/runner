@@ -49,10 +49,13 @@ fly = true;
 jumpStart = princessPosition[1];
 jumpUp = true;
 pseudoUp = false;
-princessImage = [new Image(), new Image(), new Image()];
+princessImage = [new Image(), new Image(), new Image(), new Image(), new Image(), new Image()];
 princessImage[0].src = "./images/bodymodHunt.png";
 princessImage[1].src = "./images/bodymodHunt05.png";
 princessImage[2].src = "./images/bodymodHunt1.png";
+princessImage[3].src = "./images/bodymodHunt15.png";
+princessImage[4].src = "./images/bodymodHunt2.png";
+princessImage[5].src = "./images/bodymodHunt25.png";
 step = 0;
 princessMotion = (changesIndex, speed, polus, jump) =>{
         if(jump){
@@ -78,15 +81,15 @@ princessMotion = (changesIndex, speed, polus, jump) =>{
                     }
                 }
             }
-            ctx.drawImage(princessImage[step], princessPosition[0], princessPosition[1], 35/1.5, 90/1.5); 
+            ctx.drawImage(princessImage[step], princessPosition[0], princessPosition[1], 35/1.5, 90/1.5);
         }else{
             step = (speed == 0) ? 0 : step;
             princessPosition[changesIndex]+= polus * speed;
-            ctx.drawImage(princessImage[step], princessPosition[0], princessPosition[1], 35/1.5, 90/1.5); 
+            ctx.drawImage(princessImage[step], princessPosition[0], princessPosition[1], 35/1.5, 90/1.5);
         }
 }
 curentImage = () => {
-    step = (step == 0) ? 1 : (step == 1) ? 2 : 0;
+    step = (step == princessImage.length - 1) ? 0 : step + 1;
 }
 characterDraw = (ignor) =>{
     if (direction[0] == 'stop' && direction[1] == 'stop') {
@@ -107,4 +110,4 @@ draw = () =>{
     requestAnimationFrame(draw);
 }
 window.requestAnimationFrame(draw);
-timer = setInterval(curentImage, 50)
+timer = setInterval(curentImage, 70)
